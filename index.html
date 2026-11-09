@@ -283,9 +283,6 @@ em{font-style:italic}
 .screen-view{position:relative;aspect-ratio:16/10;overflow:hidden;background:#0a0806}
 .screen-view > *{position:absolute;inset:0}
 .shot{width:100%;height:auto!important;min-height:100%;inset:0 0 auto 0!important;object-fit:cover;object-position:top;transition:transform 5s cubic-bezier(.45,0,.25,1)}
-.live-thumb{overflow:hidden}
-.live-thumb iframe{position:absolute;left:0;top:0;width:1440px;height:900px;border:0;transform-origin:0 0;transform:scale(var(--s,.4));pointer-events:none;opacity:0;transition:opacity .8s}
-.live-thumb.is-loaded iframe{opacity:1}
 .screen-label{position:absolute;left:12px;bottom:12px;z-index:3;display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:rgba(13,10,7,.8);font-size:12px;font-weight:700;color:var(--cream);backdrop-filter:blur(6px)}
 .screen-label i{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime)}
 .film-tag{display:inline-flex;align-items:center;gap:10px;padding:6px 14px;border-radius:999px;border:1px solid rgba(181,217,76,.45);font-size:13px;font-weight:700;color:var(--lime)}
@@ -325,20 +322,25 @@ em{font-style:italic}
 }
 
 /* ===== Cinema modal ===== */
-.cinema{position:fixed;inset:0;z-index:200;display:grid;place-items:center;background:#030202;visibility:hidden;opacity:0;transition:opacity .5s,visibility 0s .5s}
+.cinema{position:fixed;inset:0;z-index:200;display:flex;flex-direction:column;align-items:center;gap:14px;padding:16px 0 20px;background:radial-gradient(ellipse at 50% 40%,#1a120a 0%,#030202 70%);visibility:hidden;opacity:0;transition:opacity .5s,visibility 0s .5s}
 .cinema.is-open{visibility:visible;opacity:1;transition:opacity .5s,visibility 0s}
-.cinema-screen{position:relative;z-index:1;width:min(92vw,1280px);aspect-ratio:16/9;max-height:72vh;border-radius:6px;overflow:hidden;background:#111;box-shadow:0 0 160px -20px rgba(255,217,138,.4)}
-.cinema-screen iframe,.cinema-screen img{width:100%;height:100%;border:0;object-fit:cover;object-position:top}
+.cinema-head{position:relative;z-index:6;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 20px;width:min(92vw,1400px)}
+.cinema-title{font-family:var(--serif);font-style:italic;font-size:clamp(18px,2vw,26px);color:var(--gold)}
+.cinema-actions{display:flex;flex-wrap:wrap;gap:10px}
+.cinema-screen{position:relative;z-index:1;flex:1;min-height:0;width:min(92vw,1400px);border-radius:10px;overflow:hidden;background:#111;box-shadow:0 0 0 1px rgba(255,217,138,.25),0 0 160px -30px rgba(255,217,138,.45)}
+.cinema-screen iframe,.cinema-screen img{display:block;width:100%;height:100%;border:0;object-fit:cover;object-position:top}
 .cinema-empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;padding:24px;color:var(--smoke);font-family:var(--serif);font-style:italic;font-size:20px}
-.curtain{position:absolute;top:0;bottom:0;width:51%;z-index:3;background:repeating-linear-gradient(90deg,#3d080c 0 16px,#7a1820 16px 30px,#56101a 30px 44px);box-shadow:inset 0 0 120px rgba(0,0,0,.85);transition:transform 1.6s var(--ease)}
+.curtain{position:absolute;top:0;bottom:0;width:51%;z-index:5;pointer-events:none;background:repeating-linear-gradient(90deg,#3d080c 0 16px,#7a1820 16px 30px,#56101a 30px 44px);box-shadow:inset 0 0 120px rgba(0,0,0,.85);transition:transform 1.5s var(--ease)}
 .curtain--l{left:0}.curtain--r{right:0}
-.cinema.is-open.is-up .curtain--l{transform:translateX(-96%)}
-.cinema.is-open.is-up .curtain--r{transform:translateX(96%)}
-.valance{position:absolute;left:0;right:0;top:0;height:9vh;z-index:4;background:repeating-linear-gradient(90deg,#4a0a10 0 22px,#86202a 22px 40px);box-shadow:0 10px 30px rgba(0,0,0,.8);border-bottom-left-radius:50% 30%;border-bottom-right-radius:50% 30%}
-.seats{position:absolute;left:0;right:0;bottom:0;height:13vh;z-index:4;pointer-events:none;background:radial-gradient(circle at 50% 100%,#000 58%,transparent 60%) 0 100%/78px 64px repeat-x,radial-gradient(circle at 50% 100%,#0b0806 58%,transparent 60%) 39px 70%/78px 54px repeat-x}
-.cinema-bar{position:absolute;left:50%;bottom:16vh;z-index:5;transform:translateX(-50%);display:flex;flex-wrap:wrap;justify-content:center;gap:10px;width:max-content;max-width:94vw}
-.cinema-title{position:absolute;left:50%;top:11vh;z-index:5;transform:translateX(-50%);font-family:var(--serif);font-style:italic;font-size:clamp(18px,2vw,26px);color:var(--gold);white-space:nowrap}
-
+.cinema.is-open.is-up .curtain--l{transform:translateX(calc(-100% + max(4vw,8px) - 6px))}
+.cinema.is-open.is-up .curtain--r{transform:translateX(calc(100% - max(4vw,8px) + 6px))}
+@media (max-width:760px){
+  .cinema{padding:12px 0 14px}
+  .cinema-head,.cinema-screen{width:calc(100vw - 20px)}
+  .cinema-title{width:100%}
+  .cinema.is-open.is-up .curtain--l{transform:translateX(-100%)}
+  .cinema.is-open.is-up .curtain--r{transform:translateX(100%)}
+}
 /* ===== Cast ===== */
 .cast{columns:2 380px;column-gap:clamp(40px,6vw,96px)}
 .cast-group{break-inside:avoid;margin-bottom:44px}
@@ -698,7 +700,7 @@ em{font-style:italic}
           <p class="slate" data-reveal>Ora in sala</p>
           <h2 class="h2" id="sala-title" data-words>I siti <em>in programmazione</em></h2>
         </div>
-        <p class="lead" data-reveal>Due siti per artisti, scritti a mano e pubblicati su GitHub Pages. Passa sopra lo schermo per scorrere la home, oppure proiettali in sala.</p>
+        <p class="lead" data-reveal>Due siti per artisti, scritti a mano e pubblicati su GitHub Pages. Tocca lo schermo o "Proietta in sala" per navigarli qui, a schermo intero.</p>
       </div>
 
       <article class="film" data-site="https://domenico-tr.github.io/marco-de-chiara/" data-name="Marco De Chiara">
@@ -843,16 +845,16 @@ em{font-style:italic}
 
 <!-- Cinema modal -->
 <div class="cinema" id="cinema" role="dialog" aria-modal="true" aria-label="Sala cinema" aria-hidden="true">
-  <span class="valance" aria-hidden="true"></span>
-  <p class="cinema-title" id="cinema-title"></p>
+  <div class="cinema-head">
+    <p class="cinema-title" id="cinema-title"></p>
+    <div class="cinema-actions">
+      <a class="btn btn--amber btn--sm" id="cinema-open" href="#" target="_blank" rel="noopener">Apri in una nuova scheda</a>
+      <button class="btn btn--ghost btn--sm" type="button" id="cinema-close">Esci dalla sala</button>
+    </div>
+  </div>
   <div class="cinema-screen" id="cinema-screen"></div>
   <span class="curtain curtain--l" aria-hidden="true"></span>
   <span class="curtain curtain--r" aria-hidden="true"></span>
-  <span class="seats" aria-hidden="true"></span>
-  <div class="cinema-bar">
-    <a class="btn btn--amber" id="cinema-open" href="#" target="_blank" rel="noopener">Apri in una nuova scheda</a>
-    <button class="btn btn--ghost" type="button" id="cinema-close">Esci dalla sala</button>
-  </div>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"><i></i><span id="toast-text"></span></div>
@@ -1188,16 +1190,6 @@ em{font-style:italic}
         if (over > 4) shot.style.transform = `translateY(${-over}px)`;
       });
       screen.addEventListener('pointerleave', () => { shot.style.transform = ''; });
-    } else if (canEmbed) {
-      const box = document.createElement('div'); box.className = 'live-thumb';
-      box.innerHTML = `<iframe title="Home del sito ${film.dataset.name}" tabindex="-1" aria-hidden="true" scrolling="no"></iframe>`;
-      const fr = $('iframe', box);
-      fr.addEventListener('load', () => box.classList.add('is-loaded'));
-      view.appendChild(box);
-      const label = document.createElement('span'); label.className = 'screen-label'; label.innerHTML = '<i></i>Home dal vivo'; view.appendChild(label);
-      const fit = () => box.style.setProperty('--s', (view.clientWidth / 1440).toFixed(4));
-      fit(); new ResizeObserver(fit).observe(view);
-      new IntersectionObserver((es, obs) => { if (es[0].isIntersecting) { fr.src = film.dataset.site; obs.disconnect(); } }, { rootMargin: '400px' }).observe(view);
     }
     if (fine && !reduce) {
       screen.addEventListener('pointermove', e => {
@@ -1223,13 +1215,14 @@ em{font-style:italic}
     else if (shot) cscreen.innerHTML = `<img src="${shot.src}" alt="Home del sito ${film.dataset.name}">`;
     else cscreen.innerHTML = `<p class="cinema-empty">La proiezione dal vivo parte quando il portfolio è online su GitHub Pages.<br>Intanto puoi aprire il sito in una nuova scheda.</p>`;
     cinema.classList.add('is-open'); cinema.setAttribute('aria-hidden', 'false');
+    document.body.classList.remove('has-cursor');
     lock(true);
     setTimeout(() => cinema.classList.add('is-up'), 250);
     $('#cinema-close').focus();
   }
   function closeCinema() {
     cinema.classList.remove('is-up');
-    setTimeout(() => { cinema.classList.remove('is-open'); cinema.setAttribute('aria-hidden', 'true'); cscreen.innerHTML = ''; lock(false); if (lastFocus) lastFocus.focus(); }, reduce ? 0 : 700);
+    setTimeout(() => { cinema.classList.remove('is-open'); cinema.setAttribute('aria-hidden', 'true'); cscreen.innerHTML = ''; lock(false); if (fine) document.body.classList.add('has-cursor'); if (lastFocus) lastFocus.focus(); }, reduce ? 0 : 700);
   }
   $$('[data-cinema]').forEach(b => b.addEventListener('click', () => openCinema(b.closest('.film'))));
   $('#cinema-close').addEventListener('click', closeCinema);
